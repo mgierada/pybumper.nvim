@@ -4,6 +4,7 @@ local job = require("pybumper.utils.job")
 local virtual_text = require("pybumper.virtual_text")
 local reload = require("pybumper.helpers.reload")
 local loading = require("pybumper.ui.generic.loading-status")
+local logger = require("pybumper.utils.logger")
 
 local M = {}
 
@@ -11,9 +12,14 @@ local M = {}
 -- @return nil
 M.run = function(options)
     if not state.is_loaded then
+        logger.warn("Not a valid pyproject.toml file")
+        logger.warn("State is_loaded: " .. tostring(state.is_loaded))
+        logger.warn("State is in project: " .. tostring(state.is_in_project))
+        logger.warn("State is virtual_text displed: " .. tostring(state.is_virtual_text_displayed))
         return
     end
 
+    logger.warn("I am here")
     reload()
 
     options = options or { force = false }
@@ -31,7 +37,7 @@ M.run = function(options)
         json = true,
         command = "poetry show --outdated",
         -- command = "poetry show --outdated | jq -R -n '[inputs | split("==") | {(.[0]): .[1]}] | add' ",
-        ignore_error = true,
+        ignore_error = false,
         on_start = function()
             loading.start(id)
         end,

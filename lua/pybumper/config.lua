@@ -19,7 +19,7 @@ local M = {
             },
         },
         autostart = true,
-        package_manager = constants.PACKAGE_MANAGERS.npm,
+        package_manager = constants.PACKAGE_MANAGERS.poetry,
         hide_up_to_date = false,
         hide_unstable_versions = false,
     },
@@ -32,12 +32,14 @@ M.options = M.__DEFAULT_OPTIONS
 -- @return nil
 M.__register_namespace = function()
     state.namespace.create()
+    logger.warn("Namespace created")
 end
 
 -- Check which lock file exists and set package manager accordingly
 -- @return nil
 -- TODO: Add support for requirements.txt apprach with pip
 M.__register_package_manager = function()
+    logger.warn("Checking for poetry.lock")
     local poetry_lock = io.open("poetry.lock", "r")
 
     if poetry_lock ~= nil then
@@ -118,14 +120,15 @@ end
 -- @return nil
 M.__register_commands = function()
     vim.cmd("command! " .. constants.COMMANDS.show .. " lua require('pybumper').show()")
+    vim.cmd("command! " .. constants.COMMANDS.hide .. " lua require('pybumper').hide()")
 end
 
 --- Take all user options and setup the config
 -- @param user_options: default M table - all options user can provide in the plugin config
 -- @return nil
 M.setup = function(user_options)
+    logger.warn("Setting up pybumper")
     M.__register_user_options(user_options)
-
     M.__register_package_manager()
     M.__register_namespace()
     M.__prepare_augroup()

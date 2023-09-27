@@ -1,4 +1,4 @@
-local constants = require("package-info.utils.constants")
+local constants = require("pybumper.utils.constants")
 
 --- Register given command when the event fires
 -- @param event: string - event that will trigger the autocommand

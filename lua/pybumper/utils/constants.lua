@@ -21,6 +21,7 @@ M.LEGACY_COLORS = {
 
 M.COMMANDS = {
     show = "PybumperShow",
+    hide = "PybumperHide",
 }
 
 M.AUTOGROUP = "PybumperAutogroup"

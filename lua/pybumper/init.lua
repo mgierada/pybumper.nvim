@@ -1,5 +1,6 @@
 -- TODO: check if there is a text changes event, if so, redraw the dependencies in the buffer, TextChanged autocmd
 
+local logger = require("pybumper.utils.logger")
 local M = {}
 
 M.setup = function(options)
@@ -9,9 +10,16 @@ M.setup = function(options)
 end
 
 M.show = function(options)
+    logger.warn("Executing show action")
     local show_action = require("pybumper.actions.show")
 
     show_action.run(options)
+end
+
+M.hide = function()
+    local hide_action = require("pybumper.actions.hide")
+
+    hide_action.run()
 end
 
 M.toggle = function(options)
