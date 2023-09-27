@@ -1,4 +1,4 @@
-# Package Info Development
+# PyBumber Development
 
 - This doc provides useful information to help with the development of the plugin.
 
@@ -16,4 +16,3 @@
     ├── parser.lua                          # Handles package.json parsing and installed dependency loading
     ├── state.lua                           # Global plugin state
     └── virtual_text.lua                    # Handles all virtual text related operations
-
