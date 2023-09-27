@@ -52,9 +52,37 @@ M.parse_buffer = function()
     end
 
     -- Log installed dependencies
-    logger.warn("Installed dependencies:" .. vim.inspect(installed_dependencies))
+    -- logger.warn("Installed dependencies:" .. vim.inspect(installed_dependencies))
     state.buffer.lines = buffer_lines
     state.dependencies.installed = installed_dependencies
+end
+
+M.parse_buffer_outdated = function()
+    local buffer_lines = vim.api.nvim_buf_get_lines(state.buffer.id, 0, -1, false)
+    local buffer_content = table.concat(buffer_lines, "\n")
+    logger.warn("Parsing dependacies from poetry show --outdated")
+    logger.warn(buffer_content)
+
+    -- Extract the dependencies section
+    -- local dependencies, err = extractDependencies(buffer_content)
+    --
+    -- local installed_dependencies = {}
+    --
+    -- if dependencies then
+    --     for name, version in pairs(dependencies) do
+    --         installed_dependencies[name] = {
+    --             current = clean_version(version),
+    --         }
+    --     end
+    -- else
+    --     -- Handle the error
+    --     logger.error("Error: " .. err)
+    -- end
+    --
+    -- -- Log installed dependencies
+    -- logger.warn("Installed dependencies:" .. vim.inspect(installed_dependencies))
+    -- state.buffer.lines = buffer_lines
+    -- state.dependencies.installed = installed_dependencies
 end
 
 return M

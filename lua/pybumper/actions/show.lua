@@ -19,7 +19,6 @@ M.run = function(options)
         return
     end
 
-    logger.warn("I am here")
     reload()
 
     options = options or { force = false }
@@ -30,6 +29,8 @@ M.run = function(options)
 
         return
     end
+
+    logger.warn("Executing job")
 
     local id = loading.new("|  Fetching latest versions")
 
@@ -44,7 +45,7 @@ M.run = function(options)
         on_success = function(outdated_dependencies)
             state.dependencies.outdated = outdated_dependencies
 
-            parser.parse_buffer()
+            parser.parse_buffer_outdated()
             virtual_text.display()
             reload()
 
