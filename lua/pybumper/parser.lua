@@ -33,7 +33,6 @@ local M = {}
 M.parse_buffer = function()
     local buffer_lines = vim.api.nvim_buf_get_lines(state.buffer.id, 0, -1, false)
     local buffer_content = table.concat(buffer_lines, "\n")
-    logger.warn(buffer_content)
     logger.warn("I am here in a parser")
 
     -- Extract the dependencies section
@@ -42,29 +41,18 @@ M.parse_buffer = function()
     local installed_dependencies = {}
 
     if dependencies then
-        -- Print the extracted dependencies
         for name, version in pairs(dependencies) do
-            print(name, version)
-            logger.warn(name .. " : " .. version)
             installed_dependencies[name] = {
                 current = clean_version(version),
             }
         end
     else
         -- Handle the error
-        print("Error:", err)
-        logger.warn("Error: " .. err)
+        logger.error("Error: " .. err)
     end
 
-    -- local all_dependencies_json =
-    --     vim.tbl_extend("error", {}, buffer_json_value["devDependencies"] or {}, buffer_json_value["dependencies"] or {})
-    --
-    -- for name, version in pairs(all_dependencies_json) do
-    --     installed_dependencies[name] = {
-    --         current = clean_version(version),
-    --     }
-    -- end
-
+    -- Log installed dependencies
+    logger.warn("Installed dependencies:" .. vim.inspect(installed_dependencies))
     state.buffer.lines = buffer_lines
     state.dependencies.installed = installed_dependencies
 end
