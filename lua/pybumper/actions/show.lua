@@ -16,8 +16,8 @@ local extract_outdated_dependencies = function(outdated_dependencies)
 		-- Add package data to the table
 		if packageName and currentVersion and newVersion then
 			dependencies[packageName] = {
-				current_version = currentVersion,
-				new_version = newVersion,
+				current = currentVersion,
+				latest = newVersion,
 			}
 		end
 	end
@@ -64,15 +64,23 @@ M.run = function(options)
 			logger.warn("Inside on_success")
 			-- Add a newline character to the end of the string if it's missing
 			local extracted_dependencies = extract_outdated_dependencies(outdated_dependencies)
-			logger.warn("Extracted dependencies")
+			-- logger.warn("Extracted dependencies")
 			-- print(extracted_dependencies.current_version)
 			-- Iterate through the table and print its contents
-			for key, value in pairs(extracted_dependencies) do
-				print(key, value)
-			end
+			-- for key, value in pairs(extracted_dependencies) do
+			-- 	print(key, value)
+			-- end
+
+			state.dependencies.outdated = extracted_dependencies
+			virtual_text.display()
+			reload()
+
+			loading.stop(id)
+
+			state.last_run.update()
 
 			-- state.dependencies.outdated = outdated_dependencies
-			--
+
 			-- parser.parse_buffer_outdated()
 			-- virtual_text.display()
 			-- reload()
