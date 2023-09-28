@@ -72,6 +72,7 @@ M.run = function(options)
 			-- end
 
 			state.dependencies.outdated = extracted_dependencies
+			-- logger.warn("Outdated dependencies from state:" .. vim.inspect(state.dependencies.outdated))
 			virtual_text.display()
 			reload()
 
