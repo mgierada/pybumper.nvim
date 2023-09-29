@@ -31,9 +31,6 @@ local M = {}
 M.run = function(options)
 	if not state.is_loaded then
 		logger.warn("Not a valid pyproject.toml file")
-		logger.warn("State is_loaded: " .. tostring(state.is_loaded))
-		logger.warn("State is in project: " .. tostring(state.is_in_project))
-		logger.warn("State is virtual_text displed: " .. tostring(state.is_virtual_text_displayed))
 		return
 	end
 
@@ -48,8 +45,6 @@ M.run = function(options)
 		return
 	end
 
-	logger.warn("Executing job")
-
 	local id = loading.new("|  Fetching latest versions")
 
 	job({
@@ -61,34 +56,15 @@ M.run = function(options)
 			loading.start(id)
 		end,
 		on_success = function(outdated_dependencies)
-			logger.warn("Inside on_success")
-			-- Add a newline character to the end of the string if it's missing
 			local extracted_dependencies = extract_outdated_dependencies(outdated_dependencies)
-			-- logger.warn("Extracted dependencies")
-			-- print(extracted_dependencies.current_version)
-			-- Iterate through the table and print its contents
-			-- for key, value in pairs(extracted_dependencies) do
-			-- 	print(key, value)
-			-- end
 
 			state.dependencies.outdated = extracted_dependencies
-			-- logger.warn("Outdated dependencies from state:" .. vim.inspect(state.dependencies.outdated))
 			virtual_text.display()
+
 			reload()
 
 			loading.stop(id)
-
 			state.last_run.update()
-
-			-- state.dependencies.outdated = outdated_dependencies
-
-			-- parser.parse_buffer_outdated()
-			-- virtual_text.display()
-			-- reload()
-			--
-			-- loading.stop(id)
-			--
-			-- state.last_run.update()
 		end,
 		on_error = function()
 			loading.stop(id)

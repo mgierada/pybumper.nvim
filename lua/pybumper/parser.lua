@@ -6,6 +6,7 @@ local logger = require("pybumper.utils.logger")
 local function extractDependenciesCurrent(tomlContent)
 	local dependencies = {}
 	local insideDependenciesSection = false
+	local insideDevDependenciesSection = false
 
 	for line in tomlContent:gmatch("[^\r\n]+") do
 		-- Trim leading and trailing spaces
@@ -13,10 +14,15 @@ local function extractDependenciesCurrent(tomlContent)
 
 		if line:match("^%[tool.poetry.dependencies%]") then
 			insideDependenciesSection = true
+		elseif line:match("^%[tool.poetry.dev%-dependencies%]") then
+			insideDevDependenciesSection = true
 		elseif insideDependenciesSection and line:match("^%[.-%]") then
 			-- We've reached the end of the dependencies section
 			break
-		elseif insideDependenciesSection and line ~= "" then
+		elseif insideDevDependenciesSection and line:match("^%[.-%]") then
+			-- We've reached the end of the dev dependencies section
+			break
+		elseif (insideDependenciesSection or insideDevDependenciesSection) and line ~= "" then
 			-- Extract key-value pairs within the dependencies section
 			local key, value = line:match('^(.-)%s*=%s*"(.-)"$')
 			if key and value then
@@ -27,31 +33,6 @@ local function extractDependenciesCurrent(tomlContent)
 	return next(dependencies) and dependencies or nil, "Dependencies section not found"
 end
 
-local function extractDevDependenciesCurrent(tomlContent)
-	local devDependencies = {}
-	local insideDevDependenciesSection = false
-
-	for line in tomlContent:gmatch("[^\r\n]+") do
-		-- Trim leading and trailing spaces
-		line = line:match("^%s*(.-)%s*$")
-
-		if line:match("^%[tool.poetry.dev%-dependencies%]") then
-			insideDevDependenciesSection = true
-		elseif insideDevDependenciesSection and line:match("^%[.-%]") then
-			-- We've reached the end of the dev dependencies section
-			break
-		elseif insideDevDependenciesSection and line ~= "" then
-			-- Extract key-value pairs within the dev dependencies section
-			local key, value = line:match('^(.-)%s*=%s*"(.-)"$')
-			if key and value then
-				devDependencies[key] = value
-			end
-		end
-	end
-
-	return next(devDependencies) and devDependencies or nil, "Dev dependencies section not found"
-end
-
 local M = {}
 
 M.parse_buffer = function()
@@ -60,9 +41,6 @@ M.parse_buffer = function()
 
 	-- Extract the dependencies section
 	local dependencies, err = extractDependenciesCurrent(buffer_content)
-	print(vim.inspect(dependencies))
-	-- local devDependencies, err = extractDevDependenciesCurrent(buffer_content)
-	-- print(vim.inspect(devDependencies))
 
 	local installed_dependencies = {}
 
@@ -78,11 +56,8 @@ M.parse_buffer = function()
 		logger.error("Error: " .. err)
 	end
 
-	-- Log installed dependencies
-	-- logger.warn("Installed dependencies:" .. vim.inspect(installed_dependencies))
 	state.buffer.lines = buffer_lines
 	state.dependencies.installed = installed_dependencies
-	-- logger.warn("Installed dependencies from state:" .. vim.inspect(state.dependencies.installed))
 end
 
 M.parse_buffer_outdated = function()
