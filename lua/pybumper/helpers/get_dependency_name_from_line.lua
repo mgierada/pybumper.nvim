@@ -6,50 +6,52 @@ local clean_version = require("pybumper.helpers.clean_version")
 -- @param value: string - value to check if conforms
 -- @return boolean
 local is_valid_dependency_version = function(value)
-    local cleaned_version = clean_version(value)
+	local cleaned_version = clean_version(value)
 
-    if cleaned_version == nil then
-        return false
-    end
+	if cleaned_version == nil then
+		return false
+	end
 
-    local position = 0
-    local is_valid = true
+	local position = 0
+	local is_valid = true
 
-    -- Check that the first two chunks in version string are numbers
-    -- Everything beyond could be unstable version suffix
-    for chunk in string.gmatch(cleaned_version, "([^.]+)") do
-        if position ~= 2 and type(tonumber(chunk)) ~= "number" then
-            is_valid = false
-        end
+	-- Check that the first two chunks in version string are numbers
+	-- Everything beyond could be unstable version suffix
+	for chunk in string.gmatch(cleaned_version, "([^.]+)") do
+		if position ~= 2 and type(tonumber(chunk)) ~= "number" then
+			is_valid = false
+		end
 
-        position = position + 1
-    end
+		position = position + 1
+	end
 
-    return is_valid
+	return is_valid
 end
 
 --- Gets the dependency name from the given buffer line
 -- @param line: string - buffer line from which to get the name from
 -- @return string?
 return function(line)
-    local value = {}
+	local value = {}
+	-- Try to match the name and version from the line
+	local name, version = line:match('^(%S+)%s*=%s*"([^"]+)"')
 
-    -- Tries to extract name and version
-    for chunk in string.gmatch(line, [["(.-)"]]) do
-        table.insert(value, chunk)
-    end
+	if name and version then
+		table.insert(value, name)
+		table.insert(value, version)
+	end
 
-    -- If no version or name fail
-    if not value[1] or not value[2] then
-        return nil
-    end
+	-- If no version or name fail
+	if not value[1] or not value[2] then
+		return nil
+	end
 
-    local is_installed = to_boolean(state.dependencies.installed[value[1]])
-    local is_valid_version = is_valid_dependency_version(value[2])
+	local is_installed = to_boolean(state.dependencies.installed[value[1]])
+	local is_valid_version = is_valid_dependency_version(value[2])
 
-    if is_installed and is_valid_version then
-        return value[1]
-    end
+	if is_installed and is_valid_version then
+		return value[1]
+	end
 
-    return nil
+	return nil
 end
