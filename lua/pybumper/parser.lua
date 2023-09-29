@@ -24,8 +24,32 @@ local function extractDependenciesCurrent(tomlContent)
 			end
 		end
 	end
-
 	return next(dependencies) and dependencies or nil, "Dependencies section not found"
+end
+
+local function extractDevDependenciesCurrent(tomlContent)
+	local devDependencies = {}
+	local insideDevDependenciesSection = false
+
+	for line in tomlContent:gmatch("[^\r\n]+") do
+		-- Trim leading and trailing spaces
+		line = line:match("^%s*(.-)%s*$")
+
+		if line:match("^%[tool.poetry.dev%-dependencies%]") then
+			insideDevDependenciesSection = true
+		elseif insideDevDependenciesSection and line:match("^%[.-%]") then
+			-- We've reached the end of the dev dependencies section
+			break
+		elseif insideDevDependenciesSection and line ~= "" then
+			-- Extract key-value pairs within the dev dependencies section
+			local key, value = line:match('^(.-)%s*=%s*"(.-)"$')
+			if key and value then
+				devDependencies[key] = value
+			end
+		end
+	end
+
+	return next(devDependencies) and devDependencies or nil, "Dev dependencies section not found"
 end
 
 local M = {}
@@ -33,10 +57,12 @@ local M = {}
 M.parse_buffer = function()
 	local buffer_lines = vim.api.nvim_buf_get_lines(state.buffer.id, 0, -1, false)
 	local buffer_content = table.concat(buffer_lines, "\n")
-	logger.warn("I am here in a parser")
 
 	-- Extract the dependencies section
 	local dependencies, err = extractDependenciesCurrent(buffer_content)
+	print(vim.inspect(dependencies))
+	-- local devDependencies, err = extractDevDependenciesCurrent(buffer_content)
+	-- print(vim.inspect(devDependencies))
 
 	local installed_dependencies = {}
 
@@ -62,8 +88,6 @@ end
 M.parse_buffer_outdated = function()
 	local buffer_lines = vim.api.nvim_buf_get_lines(state.buffer.id, 0, -1, false)
 	local buffer_content = table.concat(buffer_lines, "\n")
-	logger.warn("Parsing dependacies from poetry show --outdated")
-	logger.warn(buffer_content)
 
 	-- Extract the dependencies section
 	-- local dependencies, err = extractDependencies(buffer_content)

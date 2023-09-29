@@ -68,7 +68,6 @@ end
 M.display = function()
 	for line_number, line_content in ipairs(state.buffer.lines) do
 		local dependency_name = get_dependency_name_from_line(line_content)
-		print("Dependency name: " .. string.format("%s", dependency_name))
 
 		if dependency_name then
 			M.__display_on_line(line_number, dependency_name)
