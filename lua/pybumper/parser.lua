@@ -60,30 +60,48 @@ M.parse_buffer = function()
 	state.dependencies.installed = installed_dependencies
 end
 
-M.parse_buffer_outdated = function()
-	local buffer_lines = vim.api.nvim_buf_get_lines(state.buffer.id, 0, -1, false)
-	local buffer_content = table.concat(buffer_lines, "\n")
+M.extract_outdated_dependencies = function(outdated_dependencies)
+	local dependencies = {}
+	-- split by the _ character
+	for line in outdated_dependencies:gmatch("([^_]+)_") do
+		-- Extract package name, current version, and new version using patterns
+		local packageName, currentVersion, newVersion = line:match("(%S+)%s+(%S+)%s+(%S+)%s+.*")
 
-	-- Extract the dependencies section
-	-- local dependencies, err = extractDependencies(buffer_content)
-	--
-	-- local installed_dependencies = {}
-	--
-	-- if dependencies then
-	--     for name, version in pairs(dependencies) do
-	--         installed_dependencies[name] = {
-	--             current = clean_version(version),
-	--         }
-	--     end
-	-- else
-	--     -- Handle the error
-	--     logger.error("Error: " .. err)
-	-- end
-	--
-	-- -- Log installed dependencies
-	-- logger.warn("Installed dependencies:" .. vim.inspect(installed_dependencies))
-	-- state.buffer.lines = buffer_lines
-	-- state.dependencies.installed = installed_dependencies
+		-- Add package data to the table
+		if packageName and currentVersion and newVersion then
+			dependencies[packageName] = {
+				current = currentVersion,
+				latest = newVersion,
+			}
+		end
+	end
+	return dependencies
 end
+
+-- M.parse_buffer_outdated = function()
+-- 	local buffer_lines = vim.api.nvim_buf_get_lines(state.buffer.id, 0, -1, false)
+-- 	local buffer_content = table.concat(buffer_lines, "\n")
+--
+-- 	-- Extract the dependencies section
+-- 	-- local dependencies, err = extractDependencies(buffer_content)
+-- 	--
+-- 	-- local installed_dependencies = {}
+-- 	--
+-- 	-- if dependencies then
+-- 	--     for name, version in pairs(dependencies) do
+-- 	--         installed_dependencies[name] = {
+-- 	--             current = clean_version(version),
+-- 	--         }
+-- 	--     end
+-- 	-- else
+-- 	--     -- Handle the error
+-- 	--     logger.error("Error: " .. err)
+-- 	-- end
+-- 	--
+-- 	-- -- Log installed dependencies
+-- 	-- logger.warn("Installed dependencies:" .. vim.inspect(installed_dependencies))
+-- 	-- state.buffer.lines = buffer_lines
+-- 	-- state.dependencies.installed = installed_dependencies
+-- end
 
 return M

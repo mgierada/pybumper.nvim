@@ -6,23 +6,23 @@ local reload = require("pybumper.helpers.reload")
 local loading = require("pybumper.ui.generic.loading-status")
 local logger = require("pybumper.utils.logger")
 
-local extract_outdated_dependencies = function(outdated_dependencies)
-	local dependencies = {}
-	-- split by the _ character
-	for line in outdated_dependencies:gmatch("([^_]+)_") do
-		-- Extract package name, current version, and new version using patterns
-		local packageName, currentVersion, newVersion = line:match("(%S+)%s+(%S+)%s+(%S+)%s+.*")
-
-		-- Add package data to the table
-		if packageName and currentVersion and newVersion then
-			dependencies[packageName] = {
-				current = currentVersion,
-				latest = newVersion,
-			}
-		end
-	end
-	return dependencies
-end
+-- local extract_outdated_dependencies = function(outdated_dependencies)
+-- 	local dependencies = {}
+-- 	-- split by the _ character
+-- 	for line in outdated_dependencies:gmatch("([^_]+)_") do
+-- 		-- Extract package name, current version, and new version using patterns
+-- 		local packageName, currentVersion, newVersion = line:match("(%S+)%s+(%S+)%s+(%S+)%s+.*")
+--
+-- 		-- Add package data to the table
+-- 		if packageName and currentVersion and newVersion then
+-- 			dependencies[packageName] = {
+-- 				current = currentVersion,
+-- 				latest = newVersion,
+-- 			}
+-- 		end
+-- 	end
+-- 	return dependencies
+-- end
 
 local M = {}
 
@@ -50,13 +50,12 @@ M.run = function(options)
 	job({
 		json = false,
 		command = "poetry show -o | awk -F' +' '{print $1, $2, $3 \" _ \" ;}'",
-		-- command = "poetry show --outdated | jq -R -n '[inputs | split("==") | {(.[0]): .[1]}] | add' ",
 		ignore_error = false,
 		on_start = function()
 			loading.start(id)
 		end,
 		on_success = function(outdated_dependencies)
-			local extracted_dependencies = extract_outdated_dependencies(outdated_dependencies)
+			local extracted_dependencies = parser.extract_outdated_dependencies(outdated_dependencies)
 
 			state.dependencies.outdated = extracted_dependencies
 			virtual_text.display()

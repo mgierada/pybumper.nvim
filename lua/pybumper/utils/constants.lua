@@ -1,27 +1,27 @@
 local M = {}
 
 M.HIGHLIGHT_GROUPS = {
-    outdated = "PybumperOutdatedVersion",
-    up_to_date = "PybumperUpToDateVersion",
+	outdated = "PybumperOutdatedVersion",
+	up_to_date = "PybumperUpToDateVersion",
 }
 
 M.PACKAGE_MANAGERS = {
-    poetry = "poetry",
+	poetry = "poetry",
 }
 
 M.DEPENDENCY_TYPE = {
-    production = "prod",
-    development = "dev",
+	production = "prod",
+	development = "dev",
 }
 
 M.LEGACY_COLORS = {
-    up_to_date = "237",
-    outdated = "173",
+	up_to_date = "237",
+	outdated = "173",
 }
 
 M.COMMANDS = {
-    show = "PybumperShow",
-    hide = "PybumperHide",
+	show = "PybumperShow",
+	hide = "PybumperHide",
 }
 
 M.AUTOGROUP = "PybumperAutogroup"
