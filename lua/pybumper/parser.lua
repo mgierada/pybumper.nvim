@@ -47,8 +47,7 @@ M.parse_buffer = function()
 	if dependencies then
 		for name, version in pairs(dependencies) do
 			installed_dependencies[name] = {
-				-- current = clean_version(version),
-				current = version,
+				current = clean_version(version),
 			}
 		end
 	else

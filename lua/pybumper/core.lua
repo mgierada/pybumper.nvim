@@ -1,10 +1,8 @@
 -- TODO: if you have invalid json, then fix it, plugin still wont run
 
--- local json_parser = require("pybumper.libs.json_parser")
 local parser = require("pybumper.parser")
 local state = require("pybumper.state")
 local to_boolean = require("pybumper.utils.to-boolean")
-local logger = require("pybumper.utils.logger")
 
 local M = {}
 
@@ -31,11 +29,9 @@ end
 --- Parser current buffer if valid
 -- @return nil
 M.load_plugin = function()
-	-- if not M.__is_valid_pyproject_toml() then
-	--     state.is_loaded = false
-	--
-	--     return nil
-	-- end
+	if not M.__is_valid_pyproject_toml() then
+		state.is_loaded = false
+	end
 
 	state.buffer.save()
 	state.is_loaded = true
