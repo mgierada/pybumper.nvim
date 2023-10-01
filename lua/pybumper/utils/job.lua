@@ -29,9 +29,9 @@ return function(props)
 	local file_path = vim.fn.expand("%:p")
 	-- If the file is a pyproject.toml then use the directory
 	-- of the file as value for cwd
-	-- FIXME: This is a nasty hack
-	if string.sub(file_path, -14) == "pyproject.toml" then
-		cwd = string.sub(file_path, 1, -15)
+	local file_extension = "pyproject.toml"
+	if file_path:sub(-#file_extension) == file_extension then
+		cwd = file_path:sub(1, -#file_extension - 1)
 	end
 
 	vim.fn.jobstart(props.command, {
