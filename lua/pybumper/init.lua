@@ -27,6 +27,11 @@ M.install = function()
 	install_action.run()
 end
 
+M.upadate = function()
+	local update_action = require("pybumper.actions.update")
+	update_action.run()
+end
+
 M.toggle = function(options)
 	local state = require("pybumper.state")
 	if state.is_virtual_text_displayed then

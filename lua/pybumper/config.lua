@@ -133,6 +133,7 @@ M.__register_commands = function()
 	vim.cmd("command! " .. constants.COMMANDS.hide .. " lua require('pybumper').hide()")
 	vim.cmd("command! " .. constants.COMMANDS.delete .. " lua require('pybumper').delete()")
 	vim.cmd("command! " .. constants.COMMANDS.install .. " lua require('pybumper').install()")
+	vim.cmd("command! " .. constants.COMMANDS.update .. " lua require('pybumper').upadate()")
 end
 
 --- Take all user options and setup the config
