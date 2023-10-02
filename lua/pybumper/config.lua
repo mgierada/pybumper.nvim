@@ -1,6 +1,5 @@
 local constants = require("pybumper.utils.constants")
 local register_highlight_group = require("pybumper.utils.register-highlight-group")
-local register_autocmd = require("pybumper.utils.register-autocmd")
 local state = require("pybumper.state")
 local logger = require("pybumper.utils.logger")
 
@@ -67,15 +66,23 @@ end
 --- Register autocommand for loading the plugin
 -- @return nil
 M.__register_start = function()
-	register_autocmd("BufEnter", "lua require('pybumper.core').load_plugin()")
+	vim.api.nvim_create_autocmd({ "BufEnter" }, {
+		pattern = { "*.pyproject.toml", "*.poetry.toml", "pyproject.toml", "poetry.toml" },
+		callback = function()
+			require("pybumper.core").load_plugin()
+		end,
+	})
 end
 
 --- Register autocommand for auto-starting plugin
 -- @return nil
 M.__register_autostart = function()
-	if M.options.autostart then
-		register_autocmd("BufEnter", "lua require('pybumper').show()")
-	end
+	vim.api.nvim_create_autocmd({ "BufEnter" }, {
+		pattern = { "*.pyproject.toml", "*.poetry.toml", "pyproject.toml", "poetry.toml" },
+		callback = function()
+			require("pybumper").show()
+		end,
+	})
 end
 
 --- Sets the plugin colors after the user colorscheme is loaded
