@@ -97,7 +97,12 @@ M.__register_colorscheme_initialization = function()
 		return
 	end
 
-	register_autocmd("ColorScheme", "lua require('pybumper.config').__register_highlight_groups()")
+	vim.api.nvim_create_autocmd({ "ColorScheme" }, {
+		pattern = { "*" },
+		callback = function()
+			M.__register_highlight_groups()
+		end,
+	})
 end
 
 --- Register all highlight groups
