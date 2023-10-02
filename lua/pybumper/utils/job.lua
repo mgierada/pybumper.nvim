@@ -1,4 +1,3 @@
-local json_parser = require("pybumper.libs.json_parser")
 local logger = require("pybumper.utils.logger")
 local safe_call = require("pybumper.utils.safe-call")
 

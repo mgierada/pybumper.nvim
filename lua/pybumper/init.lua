@@ -20,6 +20,12 @@ M.hide = function()
 	hide_action.run()
 end
 
+M.delete = function()
+	local delete_action = require("pybumper.actions.delete")
+
+	delete_action.run()
+end
+
 M.toggle = function(options)
 	local state = require("pybumper.state")
 
