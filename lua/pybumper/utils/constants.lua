@@ -23,6 +23,7 @@ M.COMMANDS = {
 	show = "PybumperShow",
 	hide = "PybumperHide",
 	delete = "PybumperDelete",
+	install = "PybumperInstall",
 }
 
 M.AUTOGROUP = "PybumperAutogroup"
