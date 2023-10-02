@@ -11,9 +11,6 @@ local M = {}
 --- Runs the show outdated dependencies action
 -- @return nil
 M.run = function(options)
-	print("is loaded:" .. vim.inspect(state.is_loaded))
-	print("is in project:" .. vim.inspect(state.is_in_project))
-	print("is virtual text displayed:" .. vim.inspect(state.is_virtual_text_displayed))
 	if not state.is_loaded then
 		logger.warn("Not a valid pyproject.toml file")
 		return

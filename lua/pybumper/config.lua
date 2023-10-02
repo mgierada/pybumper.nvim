@@ -67,6 +67,7 @@ end
 -- @return nil
 M.__register_start = function()
 	vim.api.nvim_create_autocmd({ "BufEnter" }, {
+		-- git worktree support
 		pattern = { "*.pyproject.toml", "*.poetry.toml", "pyproject.toml", "poetry.toml" },
 		callback = function()
 			require("pybumper.core").load_plugin()
