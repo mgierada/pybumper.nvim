@@ -2,7 +2,6 @@ local constants = require("pybumper.utils.constants")
 local register_highlight_group = require("pybumper.utils.register-highlight-group")
 local register_autocmd = require("pybumper.utils.register-autocmd")
 local state = require("pybumper.state")
-local job = require("pybumper.utils.job")
 local logger = require("pybumper.utils.logger")
 
 local M = {
@@ -36,7 +35,7 @@ end
 
 -- Check which lock file exists and set package manager accordingly
 -- @return nil
--- TODO: Add support for requirements.txt apprach with pip
+-- TODO: Add support for requirements.txt approach with pip
 M.__register_package_manager = function()
 	local poetry_lock = io.open("poetry.lock", "r")
 

@@ -23,7 +23,7 @@ return function(props)
 	end
 
 	-- Get the current cwd and use it as the value for
-	-- cwd in case no package.json is open right now
+	-- cwd in case no pyproject.toml open right now
 	local cwd = vim.fn.getcwd()
 	-- Get the path of the opened file if there is one
 	local file_path = vim.fn.expand("%:p")

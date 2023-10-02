@@ -13,6 +13,6 @@
     ├── config.lua                          # Setup of user passed configuration options
     ├── core.lua                            # Responsible loading the plugin in the correct scenarios
     ├── init.lua                            # Exports all the user facing commands
-    ├── parser.lua                          # Handles package.json parsing and installed dependency loading
+    ├── parser.lua                          # Handles pyproject.toml parsing and installed dependency loading
     ├── state.lua                           # Global plugin state
     └── virtual_text.lua                    # Handles all virtual text related operations

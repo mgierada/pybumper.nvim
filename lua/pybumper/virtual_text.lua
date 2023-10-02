@@ -46,7 +46,7 @@ M.__display_on_line = function(line_number, dependency_name)
 	return virtual_text
 end
 
---- Clear all plugin virtual text in package.json
+--- Clear all plugin virtual text in pyproject.toml
 -- @return nil
 M.clear = function()
 	if state.is_virtual_text_displayed then
