@@ -27,8 +27,8 @@ end
 -- @param dependency_name: string - dependency for which to get the command
 -- @return string
 M.__get_version_list_command = function(dependency_name)
-	if config.options.package_manager == constants.PACKAGE_MANAGERS.pnpm then
-		return "pip index versions " .. dependency_name
+	if config.options.package_manager == constants.PACKAGE_MANAGERS.poetry then
+		return ("pip index versions " .. dependency_name)
 	end
 end
 
@@ -66,6 +66,7 @@ end
 -- @param versions: string[] - versions to map to menu items
 -- @return Menu.item[] - versions mapped to menu items
 M.__create_select_items = function(versions)
+	print(vim.inspect(versions))
 	local version_list = {}
 
 	-- Iterate versions from the end to show the latest versions first
@@ -91,7 +92,6 @@ end
 M.run = function()
 	if not state.is_loaded then
 		logger.warn("Not in valid package.json file")
-
 		return
 	end
 
@@ -102,10 +102,11 @@ M.run = function()
 	end
 
 	local id = loading.new("|  Fetching " .. dependency_name .. " versions")
+	local command = M.__get_version_list_command(dependency_name)
 
 	job({
 		json = true,
-		command = M.__get_version_list_command(dependency_name),
+		command = command,
 		on_start = function()
 			loading.start(id)
 		end,

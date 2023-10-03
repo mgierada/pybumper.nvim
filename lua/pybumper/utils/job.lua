@@ -1,6 +1,32 @@
 local logger = require("pybumper.utils.logger")
 local safe_call = require("pybumper.utils.safe-call")
 
+local clean_and_format_version_list = function(raw_output)
+	-- Remove the prefix
+	-- print(vim.inspect(raw_output))
+	local startIndex = string.find(raw_output, ":") + 1
+	local versionString = string.sub(raw_output, startIndex)
+
+	-- Split the remaining string by commas and store in a table
+	local versions = {}
+	for version in string.gmatch(versionString, "%s*([^,]+)%s*,") do
+		table.insert(versions, version)
+	end
+
+	-- Add the last version (no trailing comma)
+	local lastVersion = string.match(versionString, "%s*([^,]+)%s*$")
+	if lastVersion then
+		table.insert(versions, lastVersion)
+	end
+
+	-- Reverse the table manually
+	local reversedVersions = {}
+	for i = #versions, 1, -1 do
+		table.insert(reversedVersions, versions[i])
+	end
+	return reversedVersions
+end
+
 --- Runs an async job
 -- @param props.command - string command to run
 -- @param props.on_success - function to invoke with the results
@@ -40,7 +66,13 @@ return function(props)
 				on_error()
 				return
 			end
-			props.on_success(value)
+			if props.json then
+				local parsed = clean_and_format_version_list(value)
+				props.on_success(parsed)
+				return
+			else
+				props.on_success(value)
+			end
 		end,
 		on_stdout = function(_, stdout)
 			value = value .. table.concat(stdout)
