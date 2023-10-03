@@ -25,6 +25,7 @@ M.COMMANDS = {
 	delete = "PybumperDelete",
 	install = "PybumperInstall",
 	update = "PybumperUpdate",
+	change_version = "PybumperChangeVersion",
 }
 
 M.AUTOGROUP = "PybumperAutogroup"

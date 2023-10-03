@@ -32,6 +32,11 @@ M.upadate = function()
 	update_action.run()
 end
 
+M.change_version = function()
+	local change_version_action = require("pybumper.actions.change-version")
+	change_version_action.run()
+end
+
 M.toggle = function(options)
 	local state = require("pybumper.state")
 	if state.is_virtual_text_displayed then
