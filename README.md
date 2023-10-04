@@ -32,9 +32,25 @@
 
 ## 🔌 Available commands
 
-Show virtual_text with info about the latest versions of dependencies.
+### Display virtual_text with info about the latest versions of dependencies.
 
 ![](./media/demo_show.gif)
+
+### Hide or show available version on demand
+
+![](./media/demo_hide.gif)
+
+### Install any valid dependency
+
+![](./media/demo_install.gif)
+
+### Delete any dependency for the current line
+
+![](./media/demo_delete.gif)
+
+### Change version of any dependency from the current line
+
+![](./media/demo_change_version.gif)
 
 ## ⚡️Requirements
 
