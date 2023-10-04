@@ -3,7 +3,6 @@ local safe_call = require("pybumper.utils.safe-call")
 
 local clean_and_format_version_list = function(raw_output)
 	-- Remove the prefix
-	-- print(vim.inspect(raw_output))
 	local startIndex = string.find(raw_output, ":") + 1
 	local versionString = string.sub(raw_output, startIndex)
 

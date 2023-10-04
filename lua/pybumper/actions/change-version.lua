@@ -66,7 +66,6 @@ end
 -- @param versions: string[] - versions to map to menu items
 -- @return Menu.item[] - versions mapped to menu items
 M.__create_select_items = function(versions)
-	print(vim.inspect(versions))
 	local version_list = {}
 
 	-- Iterate versions from the end to show the latest versions first
