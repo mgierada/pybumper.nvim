@@ -20,8 +20,6 @@
 
 </div>
 
-<div align="center">
-
 ## ✨ Features
 
 - ✨ Display latest dependency versions as virtual text.
