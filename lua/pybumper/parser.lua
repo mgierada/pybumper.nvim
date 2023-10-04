@@ -1,4 +1,3 @@
-local json_parser = require("pybumper.libs.json_parser")
 local state = require("pybumper.state")
 local clean_version = require("pybumper.helpers.clean_version")
 local logger = require("pybumper.utils.logger")
