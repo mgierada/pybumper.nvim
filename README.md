@@ -24,15 +24,21 @@
 
 - ✨ Display latest dependency versions as virtual text.
 - ✨ Install any available dependency from a drop down list based on a current line.
-- ✨ Add any new valid new dependency.
+- ✨ Add any new valid dependency.
 - ✨ Upgrade dependency on a current line.
 - ✨ Remove any dependency.
-- 🏗 Automatic package manager detection (poetry supported at this moment. Support for `requirements.txt` would be added later.).
+- 🏗 Automatic package manager detection (`poetry` supported at this moment. Support for `requirements.txt` would be added later.).
 - 🏗 Loading animation hook (to be placed in status bar or anywhere else).
 
 ## 🔌 Available commands
 
+Show virtual_text with info about the latest versions of dependencies.
+
+![](./media/demo_show.gif)
+
 ## ⚡️Requirements
+
+It should work with any fairly modern python tech stack. I tested that for the following:
 
 - neovim >= 0.9
 - poetry >= 1.5.1
