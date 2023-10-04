@@ -45,7 +45,7 @@ Install with your favourite package manager
 
 [Lazy](https://github.com/folke/lazy.nvim)
 
-```shell
+```lua
   -- Pybumper
   {
     "mgierada/pybumber.nvim",
@@ -60,7 +60,7 @@ Install with your favourite package manager
 
 The `pybumper.nvim` comes up with the following configuration. Any of of those can be easily overridden by providing a config to setup function.
 
-```bash
+```lua
 {
 	colors = {
 		up_to_date = "#3C4048",
