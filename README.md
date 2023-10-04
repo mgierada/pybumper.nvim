@@ -30,6 +30,8 @@
 - 🏗 Automatic package manager detection (poetry supported at this moment. Support for `requirements.txt` would be added later.).
 - 🏗 Loading animation hook (to be placed in status bar or anywhere else).
 
+## 🔌 Available commands
+
 ## ⚡️Requirements
 
 - neovim >= 0.9
@@ -78,8 +80,6 @@ The `pybumper.nvim` comes up with the following configuration. Any of of those c
 },
 
 ```
-
-## 🔌 Available commands
 
 ## 💡 Inspiration
 
