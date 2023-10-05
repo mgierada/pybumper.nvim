@@ -73,7 +73,7 @@ Install with your favourite package manager
     "mgierada/pybumber.nvim",
     dependencies = { "MunifTanjim/nui.nvim" },
     config = function() require("pybumper").setup {} end,
-    event = "VeryLazy",
+    event = "BufRead",
   },
 
 ```
