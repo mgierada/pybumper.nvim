@@ -60,7 +60,7 @@ end
 --- Runs the install new dependency action
 -- @return nil
 M.run = function()
-	if not state.is_in_project then
+	if not state.is_loaded then
 		logger.info("Not in valid pyproject.toml file")
 		return
 	end
