@@ -61,8 +61,7 @@ end
 -- @return nil
 M.run = function()
 	if not state.is_in_project then
-		logger.info("Not in a JS/TS project")
-
+		logger.info("Not in valid pyproject.toml file")
 		return
 	end
 
