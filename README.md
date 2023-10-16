@@ -36,26 +36,36 @@
 
 <details>
 <summary>Click to expand</summary>
-
 ![](./media/demo_show.gif)
-
-<details/>
+</details>
 
 ### Hide or show available version on demand
 
+<details>
+<summary>Click to expand</summary>
 ![](./media/demo_hide.gif)
+</details>
 
 ### Install any valid dependency
 
+<details>
+<summary>Click to expand</summary>
 ![](./media/demo_install.gif)
+</details>
 
 ### Delete any dependency for the current line
 
+<details>
+<summary>Click to expand</summary>
 ![](./media/demo_delete.gif)
+</details>
 
 ### Change version of any dependency from the current line
 
+<details>
+<summary>Click to expand</summary>
 ![](./media/demo_change_version.gif)
+</details>
 
 ## ⚡️Requirements
 
