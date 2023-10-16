@@ -34,7 +34,12 @@
 
 ### Display virtual_text with info about the latest versions of dependencies.
 
+<details>
+<summary>Click to expand</summary>
+
 ![](./media/demo_show.gif)
+
+<details/>
 
 ### Hide or show available version on demand
 
