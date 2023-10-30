@@ -81,7 +81,7 @@
 
 It should work with any fairly modern python tech stack. I tested that for the following:
 
-- neovim >= 0.9
+- neovim >= 0.9 and nightly 0.10-dev releases
 - poetry >= 1.5.1
 - python >= 3.10.8
 - pip >= 23.2.1
