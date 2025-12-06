@@ -95,7 +95,7 @@ Install with your favourite package manager
 ```lua
   -- Pybumper
   {
-    "mgierada/pybumber.nvim",
+    "mgierada/pybumper.nvim",
     dependencies = { "MunifTanjim/nui.nvim" },
     config = function() require("pybumper").setup {} end,
     event = "BufRead",
