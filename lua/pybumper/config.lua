@@ -36,7 +36,17 @@ end
 -- @return nil
 -- TODO: Add support for requirements.txt approach with pip
 M.__register_package_manager = function()
+	local uv_lock = io.open("uv.lock", "r")
 	local poetry_lock = io.open("poetry.lock", "r")
+
+	if uv_lock ~= nil then
+		M.options.package_manager = constants.PACKAGE_MANAGERS.uv
+
+		io.close(uv_lock)
+		state.is_in_project = true
+
+		return
+	end
 
 	if poetry_lock ~= nil then
 		M.options.package_manager = constants.PACKAGE_MANAGERS.poetry

@@ -7,6 +7,7 @@ M.HIGHLIGHT_GROUPS = {
 
 M.PACKAGE_MANAGERS = {
 	poetry = "poetry",
+	uv = "uv",
 }
 
 M.DEPENDENCY_TYPE = {

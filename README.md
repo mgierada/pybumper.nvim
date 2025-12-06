@@ -2,7 +2,7 @@
 
 # pybumper.nvim
 
-## A wrapper around the `poetry` commands for nvim 🔌
+## A wrapper around Python package managers for nvim 🔌
 
 </div>
 
@@ -27,7 +27,7 @@
 - ✨ Add any new valid dependency.
 - ✨ Upgrade dependency on a current line.
 - ✨ Remove any dependency.
-- 🏗 Automatic package manager detection (`poetry` supported at this moment. Support for `requirements.txt` would be added later.).
+- 🏗 Automatic package manager detection (`poetry` and `uv` supported. Support for `requirements.txt` would be added later.).
 - 🏗 Loading animation hook (to be placed in status bar or anywhere else).
 
 ## 🔌 Available commands
@@ -82,7 +82,8 @@
 It should work with any fairly modern python tech stack. I tested that for the following:
 
 - neovim >= 0.9 and nightly 0.10-dev releases
-- poetry >= 1.5.1
+- poetry >= 1.5.1 (if using poetry)
+- uv >= 0.1.0 (if using uv)
 - python >= 3.10.8
 - pip >= 23.2.1
 
@@ -121,7 +122,7 @@ The `pybumper.nvim` comes up with the following configuration. Any of of those c
 		},
 	},
 	autostart = true,
-	package_manager = constants.PACKAGE_MANAGERS.poetry,
+	package_manager = constants.PACKAGE_MANAGERS.poetry, -- or constants.PACKAGE_MANAGERS.uv
 	hide_up_to_date = false,
 	hide_unstable_versions = false,
 },

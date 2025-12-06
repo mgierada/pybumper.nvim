@@ -19,12 +19,16 @@ M.__get_command = function(type, dependency_name)
 	if type == constants.DEPENDENCY_TYPE.development then
 		if config.options.package_manager == constants.PACKAGE_MANAGERS.poetry then
 			return "poetry add --dev " .. dependency_name
+		elseif config.options.package_manager == constants.PACKAGE_MANAGERS.uv then
+			return "uv add --dev " .. dependency_name
 		end
 	end
 
 	if type == constants.DEPENDENCY_TYPE.production then
 		if config.options.package_manager == constants.PACKAGE_MANAGERS.poetry then
 			return "poetry add " .. dependency_name
+		elseif config.options.package_manager == constants.PACKAGE_MANAGERS.uv then
+			return "uv add " .. dependency_name
 		end
 	end
 end

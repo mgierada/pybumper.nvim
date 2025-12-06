@@ -17,6 +17,8 @@ local M = {}
 M.__get_command = function(dependency_name)
 	if config.options.package_manager == constants.PACKAGE_MANAGERS.poetry then
 		return "poetry remove " .. dependency_name
+	elseif config.options.package_manager == constants.PACKAGE_MANAGERS.uv then
+		return "uv remove " .. dependency_name
 	end
 end
 

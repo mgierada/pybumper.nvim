@@ -20,6 +20,8 @@ local M = {}
 M.__get_change_version_command = function(dependency_name, version)
 	if config.options.package_manager == constants.PACKAGE_MANAGERS.poetry then
 		return "poetry add " .. dependency_name .. "@" .. version
+	elseif config.options.package_manager == constants.PACKAGE_MANAGERS.uv then
+		return "uv add " .. dependency_name .. "==" .. version
 	end
 end
 
@@ -29,6 +31,8 @@ end
 M.__get_version_list_command = function(dependency_name)
 	if config.options.package_manager == constants.PACKAGE_MANAGERS.poetry then
 		return ("pip index versions " .. dependency_name)
+	elseif config.options.package_manager == constants.PACKAGE_MANAGERS.uv then
+		return ("uv pip index versions " .. dependency_name)
 	end
 end
 
