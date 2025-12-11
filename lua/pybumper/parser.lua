@@ -63,9 +63,8 @@ local function extractUVDependencies(tomlContent)
 				end
 				currentArrayContent = ""
 			end
-			-- Check for dev dependencies in [dependency-groups]
+		-- Check for dev dependencies in [dependency-groups]
 		elseif line:match("^%[dependency%-groups%]") then
-			inDevArray = false
 			inOptionalArray = false
 		elseif line:match("^dev%s*=%s*%[") then
 			inDevArray = true
@@ -82,12 +81,29 @@ local function extractUVDependencies(tomlContent)
 				end
 				currentArrayContent = ""
 			end
-			-- Check for optional dependencies in [project.optional-dependencies]
+		-- Check for optional dependencies in [project.optional-dependencies]
 		elseif line:match("^%[project%.optional%-dependencies%]") then
 			inOptionalArray = true
-			inDevArray = false
-			-- If we're in an array, continue parsing
-		elseif inDependenciesArray or inDevArray or (inOptionalArray and line:match("^%w+%s*=%s*%[")) then
+		-- Handle optional dependency arrays starting (e.g., data = [...])
+		elseif inOptionalArray and line:match("^%w+%s*=%s*%[") then
+			-- This is a new optional dependency array
+			currentArrayContent = line
+			-- Check if array closes on same line
+			if line:match("%]%s*$") then
+				-- Parse single-line optional array
+				for pkg in line:gmatch('"([^"]+)"') do
+					local name, version = pkg:match("^([^=<>~!]+)[=<>~!]+(.*)$")
+					if name and version then
+						dependencies[name] = version
+					end
+				end
+				currentArrayContent = ""
+			else
+				-- Multi-line optional array, will continue in next elseif
+				inDevArray = true  -- Reuse the dev array flag for optional deps
+			end
+		-- If we're in a multi-line array, continue parsing
+		elseif inDependenciesArray or inDevArray then
 			currentArrayContent = currentArrayContent .. " " .. line
 
 			-- Check if we've reached the end of the array
@@ -103,7 +119,7 @@ local function extractUVDependencies(tomlContent)
 				inDependenciesArray = false
 				inDevArray = false
 			end
-			-- Check for new section (stop parsing optional deps)
+		-- Check for new section (stop parsing optional deps)
 		elseif line:match("^%[.-%]") then
 			inOptionalArray = false
 			inDependenciesArray = false
