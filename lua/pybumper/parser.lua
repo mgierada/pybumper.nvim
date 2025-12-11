@@ -41,6 +41,7 @@ local function extractUVDependencies(tomlContent)
 	local inDependenciesArray = false
 	local inDevArray = false
 	local inOptionalArray = false
+	local inOptionalDepArray = false
 	local currentArrayContent = ""
 
 	for line in tomlContent:gmatch("[^\r\n]+") do
@@ -66,6 +67,7 @@ local function extractUVDependencies(tomlContent)
 		-- Check for dev dependencies in [dependency-groups]
 		elseif line:match("^%[dependency%-groups%]") then
 			inOptionalArray = false
+			inDevArray = false
 		elseif line:match("^dev%s*=%s*%[") then
 			inDevArray = true
 			currentArrayContent = line
@@ -84,6 +86,7 @@ local function extractUVDependencies(tomlContent)
 		-- Check for optional dependencies in [project.optional-dependencies]
 		elseif line:match("^%[project%.optional%-dependencies%]") then
 			inOptionalArray = true
+			inOptionalDepArray = false
 		-- Handle optional dependency arrays starting (e.g., data = [...])
 		elseif inOptionalArray and line:match("^%w+%s*=%s*%[") then
 			-- This is a new optional dependency array
@@ -100,10 +103,10 @@ local function extractUVDependencies(tomlContent)
 				currentArrayContent = ""
 			else
 				-- Multi-line optional array, will continue in next elseif
-				inDevArray = true  -- Reuse the dev array flag for optional deps
+				inOptionalDepArray = true
 			end
 		-- If we're in a multi-line array, continue parsing
-		elseif inDependenciesArray or inDevArray then
+		elseif inDependenciesArray or inDevArray or inOptionalDepArray then
 			currentArrayContent = currentArrayContent .. " " .. line
 
 			-- Check if we've reached the end of the array
@@ -118,12 +121,14 @@ local function extractUVDependencies(tomlContent)
 				currentArrayContent = ""
 				inDependenciesArray = false
 				inDevArray = false
+				inOptionalDepArray = false
 			end
 		-- Check for new section (stop parsing optional deps)
 		elseif line:match("^%[.-%]") then
 			inOptionalArray = false
 			inDependenciesArray = false
 			inDevArray = false
+			inOptionalDepArray = false
 			currentArrayContent = ""
 		end
 	end
