@@ -5,6 +5,8 @@ local virtual_text = require("pybumper.virtual_text")
 local reload = require("pybumper.helpers.reload")
 local loading = require("pybumper.ui.generic.loading-status")
 local logger = require("pybumper.utils.logger")
+local config = require("pybumper.config")
+local constants = require("pybumper.utils.constants")
 
 local M = {}
 
@@ -23,9 +25,17 @@ M.run = function(options)
 		return
 	end
 	local id = loading.new("|  Fetching latest versions")
+	
+	local command
+	if config.options.package_manager == constants.PACKAGE_MANAGERS.poetry then
+		command = "poetry show -o | awk -F' +' '{print $1, $2, $3 \" _ \" ;}'"
+	elseif config.options.package_manager == constants.PACKAGE_MANAGERS.uv then
+		command = "uv pip list --outdated | tail -n +3 | awk '{print $1, $2, $3 \" _ \" ;}'"
+	end
+	
 	job({
 		json = false,
-		command = "poetry show -o | awk -F' +' '{print $1, $2, $3 \" _ \" ;}'",
+		command = command,
 		ignore_error = false,
 		on_start = function()
 			loading.start(id)

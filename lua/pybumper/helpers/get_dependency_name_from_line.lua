@@ -33,12 +33,23 @@ end
 -- @return string?
 return function(line)
 	local value = {}
-	-- Try to match the name and version from the line
+	
+	-- Try to match Poetry format: name = "version"
 	local name, version = line:match('^(%S+)%s*=%s*"([^"]+)"')
-
+	
 	if name and version then
 		table.insert(value, name)
 		table.insert(value, version)
+	else
+		-- Try to match UV format: "package==version" or "package>=version", etc.
+		local pkg_spec = line:match('^%s*"([^"]+)"')
+		if pkg_spec then
+			name, version = pkg_spec:match("^([^=<>~!]+)[=<>~!]+(.*)$")
+			if name and version then
+				table.insert(value, name)
+				table.insert(value, version)
+			end
+		end
 	end
 
 	-- If no version or name fail
